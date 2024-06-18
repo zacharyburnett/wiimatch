@@ -91,8 +91,7 @@ show-response = 1
 [tool.distutils.bdist_wheel]
 universal = 0
 
-[tool.flake8]
-count = true
+[tool.ruff.lint]
 exclude = [
     ".git,",
     "__pycache__,",
@@ -100,15 +99,6 @@ exclude = [
     "build,",
     "dist,",
 ]
-ignore = [
-    "E501,",
-    "E402,",
-    "F403,",
-    "W504",
-]
-statistics = true
-doctests = true
-show_source = "True"
 
 [tool.pytest.ini_options]
 minversion = "2.2"
