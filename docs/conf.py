@@ -6,12 +6,12 @@ import datetime
 import sphinx
 import stsci_rtd_theme
 from packaging.version import Version
-try:
-    from ConfigParser import ConfigParser
-except ImportError:
-    from configparser import ConfigParser
-conf = ConfigParser()
+from pathlib import Path
 
+if sys.version_info < (3, 11):
+    import tomli as tomllib
+else:
+    import tomllib
 
 def setup(app):
     try:
@@ -30,8 +30,9 @@ sys.path.insert(0, os.path.abspath('../build/lib*'))
 sys.path.insert(0, os.path.abspath('../wiimatch/'))
 
 # -- General configuration ------------------------------------------------
-conf.read([os.path.join(os.path.dirname(__file__), '..', 'setup.cfg')])
-setup_cfg = dict(conf.items('metadata'))
+with open(Path(__file__).parent.parent / "pyproject.toml", "rb") as configuration_file:
+    metadata = tomllib.load(configuration_file)
+project_metadata = metadata["project"]
 
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.3'
@@ -106,8 +107,8 @@ master_doc = 'index'
 
 
 # General information about the project
-project = setup_cfg['package_name']
-author = setup_cfg['author']
+project = project_metadata['name']
+author = project_metadata['authors'][0]["name"]
 copyright = f"{datetime.datetime.now().year}, {author}"
 
 # The version info for the project you're documenting, acts as replacement for
